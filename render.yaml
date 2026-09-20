@@ -1,0 +1,29 @@
+# Render blueprint — deploy with "New +" → "Blueprint" and point it at this
+# repo, or run `render deploy` with the Render CLI. Railway and Fly.io both
+# also deploy this Dockerfile directly with no changes needed; this file is
+# specific to Render's dashboard/CLI, not required by Docker itself.
+#
+# Why Render (or Railway/Fly.io) instead of Netlify: this app is a real
+# Express server with a Python subprocess for PDF/Excel generation and a
+# local JSON database. Netlify Functions only support JavaScript/TypeScript/
+# Go — no Python — and have no persistent server or filesystem. See the
+# "Deploying online" section of README.md for the full explanation.
+services:
+  - type: web
+    name: shekhar-invoicing
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true   # Render generates a strong random secret for you
+      - key: ADMIN_DEFAULT_PASSWORD
+        value: admin123       # change this, or set your own value before first deploy
+      - key: SHEKHAR_DATA_DIR
+        value: /app/data
+    disk:
+      name: shekhar-data
+      mountPath: /app/data    # persistent disk — without this, data/db.json
+      sizeGB: 1               # is wiped on every redeploy/restart

@@ -1,0 +1,10 @@
+node_modules
+dist-installer
+electron
+data/db.json
+data/db.backup.json
+data/db.json.corrupt
+.env
+.git
+.gitignore
+*.log

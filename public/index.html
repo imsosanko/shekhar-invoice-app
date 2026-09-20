@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shekhar Compute Tech Services — Invoicing</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div>
+        <div class="lb-logo" id="lb-logo">S</div>
+        <div class="lb-name">SHEKHAR COMPUTE<br>TECH SERVICES</div>
+        <div class="lb-tag">Invoicing &amp; billing workspace — admin access only.</div>
+      </div>
+      <div class="lb-quote">"Track invoices, payments and customers in one place, built for how the business actually runs."</div>
+      <div class="lb-foot">UDYAM-BR-15-0015734 · Patna, Bihar</div>
+    </div>
+    <div class="login-form-wrap">
+      <h1>Admin sign in</h1>
+      <div class="sub">Sign in to manage invoices, customers and reports.</div>
+      <div class="login-error" id="login-error"></div>
+      <div class="field">
+        <label>Email or username</label>
+        <input type="text" id="login-email" autocomplete="username" placeholder="admin@shekharcompute.in">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="login-password" autocomplete="current-password" placeholder="Enter password">
+          <span class="pw-eye" id="login-pw-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        </div>
+      </div>
+      <div class="login-row">
+        <label><input type="checkbox" id="login-remember" style="width:auto;" checked> Keep me signed in</label>
+        <a id="login-forgot">Forgot password?</a>
+      </div>
+      <button class="btn btn-primary" id="login-submit" style="width:100%;justify-content:center;padding:11px;">Sign in</button>
+      <div class="login-hint"><b>First run credentials —</b> printed once in the server console on first boot (default password <b>admin123</b> unless you set <code>ADMIN_DEFAULT_PASSWORD</code>). Change it anytime from Profile → Security.</div>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="logo" id="sidebar-logo">S</div>
+      <div>
+        <div class="name">SHEKHAR COMPUTE<br>TECH SERVICES</div>
+      </div>
+    </div>
+    <nav>
+      <div class="nav-item active" data-page="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</div>
+      <div class="nav-item" data-page="create-invoice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Create Invoice</div>
+      <div class="nav-item" data-page="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>Invoices</div>
+      <div class="nav-item" data-page="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c1-4 3.5-6 6.5-6s5.5 2 6.5 6"/><circle cx="17.5" cy="8.5" r="2.4"/><path d="M15.7 14.2c2.3.3 4 2 4.8 5.3"/></svg>Customers</div>
+      <div class="nav-item" data-page="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>Products / Services</div>
+      <div class="nav-item" data-page="payments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Payments</div>
+      <div class="nav-item" data-page="expenses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>Expenses</div>
+      <div class="nav-item" data-page="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M11 19V4M18 19v-7"/></svg>Reports</div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 11-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 110-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 114 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 110 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>Settings</div>
+      <div class="nav-item" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.2-4.5 4.2-7 8-7s6.8 2.5 8 7"/></svg>Profile</div>
+      <div class="nav-item" id="logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Logout</div>
+    </nav>
+    <div class="foot" id="sidebar-foot">
+      <b>Shekhar Compute Tech Services</b><br>
+      Patna, Bihar<br>
+      UDYAM-BR-15-0015734
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div id="main">
+    <header id="topbar">
+      <div id="hamburger" class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
+      <div class="page-title" id="page-title">Dashboard</div>
+      <div id="sync-status" style="display:none;"></div>
+      <button class="btn btn-primary" id="new-invoice-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>New Invoice</button>
+      <div class="icon-btn" id="dark-toggle" title="Toggle dark mode"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg></div>
+      <div class="icon-btn" title="Notifications" style="position:relative;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span style="position:absolute;top:6px;right:7px;width:7px;height:7px;background:var(--red);border-radius:50%;"></span></div>
+      <div style="display:flex;align-items:center;gap:9px;padding-left:8px;border-left:1px solid var(--border);">
+        <div class="avatar">S</div>
+        <div style="line-height:1.25;">
+          <div style="font-size:13px;font-weight:700;">Shashank Shekhar</div>
+          <div style="font-size:11px;color:var(--text-faint);">Admin</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="page active" id="page-dashboard"></section>
+      <section class="page" id="page-create-invoice"></section>
+      <section class="page" id="page-invoices"></section>
+      <section class="page" id="page-customers"></section>
+      <section class="page" id="page-products"></section>
+      <section class="page" id="page-payments"></section>
+      <section class="page" id="page-expenses"></section>
+      <section class="page" id="page-reports"></section>
+      <section class="page" id="page-settings"></section>
+      <section class="page" id="page-profile"></section>
+    </main>
+  </div>
+</div>
+
+<!-- Generic modal (customer / product / payment quick add) -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head"><span id="modal-title">Title</span><span style="cursor:pointer;color:var(--text-faint);" id="modal-close">&times;</span></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot"></div>
+  </div>
+</div>
+
+<!-- Invoice PDF preview: the real PDF, rendered server-side by Python/ReportLab -->
+<div id="pdf-preview-overlay">
+  <div class="pdf-wrap">
+    <div class="pdf-toolbar">
+      <div class="title" id="pdf-title">Invoice</div>
+      <div class="actions">
+        <select id="pdf-format" style="width:150px;">
+          <option value="a4">A4 (standard)</option>
+          <option value="thermal">4×6 Thermal</option>
+        </select>
+        <select id="pdf-template" style="width:150px;">
+          <option value="taxinvoice">Tax Invoice (Bordered)</option>
+          <option value="modern">Modern Blue</option>
+          <option value="minimal">Minimal Professional</option>
+          <option value="classic">Classic Business</option>
+          <option value="bold">Bold Header</option>
+          <option value="compact">Compact</option>
+        </select>
+        <button class="btn btn-outline" id="pdf-download"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>Download PDF</button>
+        <button class="btn btn-outline" id="pdf-print"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7"/><path d="M6 14H4a1 1 0 01-1-1v-4a1 1 0 011-1h16a1 1 0 011 1v4a1 1 0 01-1 1h-2"/></svg>Print</button>
+        <button class="btn btn-outline" id="pdf-share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.7l7.4-4.2M8.3 13.3l7.4 4.2"/></svg>Share</button>
+        <button class="btn btn-outline" id="pdf-close">Close</button>
+      </div>
+    </div>
+    <div class="pdf-frame-box">
+      <div class="pdf-loading" id="pdf-loading">Generating PDF…</div>
+      <iframe id="pdf-frame" style="display:none;"></iframe>
+    </div>
+  </div>
+</div>
+
+<script src="/js/idb.js"></script>
+<script src="/js/offline.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(e => console.warn('Service worker registration failed:', e));
+    });
+  }
+</script>
+</body>
+</html>

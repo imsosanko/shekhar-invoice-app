@@ -1,0 +1,32 @@
+# Netlify config for the HYBRID deployment option only: this hosts the
+# static frontend (public/) on Netlify's CDN, while the actual server
+# (Express API + Python PDF/Excel generation) runs elsewhere — e.g. Render,
+# using the Dockerfile/render.yaml in this repo — since Netlify itself
+# cannot run that server at all (see README "Deploying online").
+#
+# The [[redirects]] rule below makes Netlify transparently proxy every
+# /api/* request to your real backend, so the frontend's existing relative
+# fetch('/api/...') calls in public/js/api.js work completely unchanged —
+# no code edits, no CORS configuration needed, because from the browser's
+# point of view everything still comes from the same Netlify domain.
+#
+# Before deploying: replace YOUR-BACKEND-URL below with your actual Render
+# (or Railway/Fly.io) URL from the "Deploying online" README section.
+
+[build]
+  publish = "public"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://YOUR-BACKEND-URL.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/sw.js"
+  to = "https://YOUR-BACKEND-URL.onrender.com/sw.js"
+  status = 200
+  force = true
+
+# Everything else (index.html, css, js) is served directly from Netlify's
+# own CDN as static files — fast, and exactly what Netlify is good at.

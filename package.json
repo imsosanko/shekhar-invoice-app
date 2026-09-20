@@ -1,0 +1,90 @@
+{
+  "name": "shekhar-invoice-app",
+  "version": "1.0.0",
+  "description": "Invoicing app for Shekhar Compute Tech Services — Node/Express API + vanilla JS/HTML/CSS frontend, with Python for PDF/Excel generation. Runs as a plain web app OR as an offline Windows/macOS/Linux desktop app via Electron.",
+  "main": "electron/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "electron": "electron .",
+    "dist:win": "electron-builder --win",
+    "dist:win:portable": "electron-builder --win portable",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "build": {
+    "appId": "com.shekharcompute.invoicing",
+    "productName": "Shekhar Compute Invoicing",
+    "directories": {
+      "output": "dist-installer"
+    },
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "public/**/*",
+      "package.json",
+      "!server/python/__pycache__",
+      "!data/db.json",
+      "!data/db.backup.json"
+    ],
+    "asarUnpack": [
+      "server/python/**"
+    ],
+    "extraResources": [
+      {
+        "from": "requirements.txt",
+        "to": "requirements.txt"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "electron/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "electron/icon.png"
+    }
+  }
+}
