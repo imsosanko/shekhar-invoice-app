@@ -5,11 +5,15 @@
 # cannot run that server at all (see README "Deploying online").
 #
 # The [[redirects]] rules below make Netlify transparently proxy every
-# /api/* and /sw.js request to your real backend, so the frontend's
-# existing relative fetch('/api/...') calls in public/js/api.js work
-# completely unchanged — no code edits, no CORS configuration needed,
-# because from the browser's point of view everything still comes from
-# the same Netlify domain.
+# /api/* request to your real backend, so the frontend's existing
+# relative fetch('/api/...') calls in public/js/api.js work completely
+# unchanged — no code edits, no CORS configuration needed, because from
+# the browser's point of view everything still comes from the same
+# Netlify domain.
+#
+# sw.js is served DIRECTLY from Netlify's own /public folder — not proxied
+# to the backend. Proxying it caused a 404 because Netlify's redirect
+# system has trouble force-serving service worker files from remote URLs.
 #
 # Backend URL: https://shekhar-invoice-app.up.railway.app
 
@@ -17,15 +21,20 @@
   publish = "public"
   command = "echo 'No build step needed - static files only'"
 
+# Proxy all API calls to the Railway backend
 [[redirects]]
   from = "/api/*"
   to = "https://shekhar-invoice-app.up.railway.app/api/:splat"
   status = 200
   force = true
 
+# sw.js must be served from Netlify's own /public folder, NOT proxied.
+# This explicit rule (matching to itself) ensures Netlify serves the
+# static file at public/sw.js with the correct MIME type, which is what
+# the browser requires to register a service worker.
 [[redirects]]
   from = "/sw.js"
-  to = "https://shekhar-invoice-app.up.railway.app/sw.js"
+  to = "/sw.js"
   status = 200
   force = true
 
