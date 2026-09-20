@@ -1,32 +1,39 @@
 # Netlify config for the HYBRID deployment option only: this hosts the
 # static frontend (public/) on Netlify's CDN, while the actual server
-# (Express API + Python PDF/Excel generation) runs elsewhere — e.g. Render,
-# using the Dockerfile/render.yaml in this repo — since Netlify itself
+# (Express API + Python PDF/Excel generation) runs elsewhere — Railway,
+# using the Dockerfile in this repo — since Netlify itself
 # cannot run that server at all (see README "Deploying online").
 #
-# The [[redirects]] rule below makes Netlify transparently proxy every
-# /api/* request to your real backend, so the frontend's existing relative
-# fetch('/api/...') calls in public/js/api.js work completely unchanged —
-# no code edits, no CORS configuration needed, because from the browser's
-# point of view everything still comes from the same Netlify domain.
+# The [[redirects]] rules below make Netlify transparently proxy every
+# /api/* and /sw.js request to your real backend, so the frontend's
+# existing relative fetch('/api/...') calls in public/js/api.js work
+# completely unchanged — no code edits, no CORS configuration needed,
+# because from the browser's point of view everything still comes from
+# the same Netlify domain.
 #
-# Before deploying: replace YOUR-BACKEND-URL below with your actual Render
-# (or Railway/Fly.io) URL from the "Deploying online" README section.
+# Backend URL: https://shekhar-invoice-app.up.railway.app
 
 [build]
   publish = "public"
+  command = "echo 'No build step needed - static files only'"
 
 [[redirects]]
   from = "/api/*"
-  to = "https://YOUR-BACKEND-URL.onrender.com/api/:splat"
+  to = "https://shekhar-invoice-app.up.railway.app/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/sw.js"
-  to = "https://YOUR-BACKEND-URL.onrender.com/sw.js"
+  to = "https://shekhar-invoice-app.up.railway.app/sw.js"
   status = 200
   force = true
 
 # Everything else (index.html, css, js) is served directly from Netlify's
 # own CDN as static files — fast, and exactly what Netlify is good at.
+# The SPA fallback below makes any unknown route load index.html so
+# client-side routing works.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
