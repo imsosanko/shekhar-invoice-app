@@ -194,3 +194,5 @@ Every feature in this README was actually exercised against a running server dur
 Two real bugs were found and fixed this way rather than shipped: the ₹ symbol not rendering in PDFs (missing Unicode font), and a flat-₹ item discount being misread as a percentage in the PDF's line-item amount column.
 
 
+#   s h e k h a r - i n v o i c e - a p p  
+ 
