@@ -97,8 +97,9 @@ function createApp() {
 function startServer(port) {
   const app = createApp();
   return new Promise((resolve, reject) => {
-    const server = app.listen(port, '127.0.0.1', () => {
-      console.log(`Shekhar Compute Tech Services — Invoicing app running at http://localhost:${port}`);
+    // CHANGED: '0.0.0.0' allows Railway (and other cloud hosts) to route external traffic into the container
+    const server = app.listen(port, '0.0.0.0', () => {
+      console.log(`Shekhar Compute Tech Services — Invoicing app running on port ${port}`);
       resolve(server);
     });
     server.on('error', reject);
